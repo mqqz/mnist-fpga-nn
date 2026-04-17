@@ -1,0 +1,10 @@
+[project]
+name = "mnist-fpga-nn"
+version = "0.1.0"
+description = "Quantised MNIST Neural Network on FPGA"
+readme = "README.md"
+requires-python = ">=3.13"
+dependencies = [
+    "pyserial>=3.5",
+    "torchao>=0.17.0",
+]

@@ -1,0 +1,13 @@
+{
+  "shape": [
+    10,
+    32
+  ],
+  "weight_scale": 0.011739288728068195,
+  "input_scale": 0.13686184620294045,
+  "bias_scale": 0.0016066607284327817,
+  "weight_quantization": "symmetric_per_tensor_int8",
+  "bias_quantization": "int32 using input_scale * weight_scale",
+  "flatten_order": "row_major",
+  "verilog_addr_formula": "addr = neuron * 32 + feature"
+}

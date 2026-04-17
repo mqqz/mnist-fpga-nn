@@ -1,0 +1,17 @@
+CMD_LOAD_INPUT = 0x01
+CMD_RUN = 0x02
+CMD_READ_OUTPUT = 0x03
+
+RESP_LOAD_DONE = 0x81
+RESP_RUN_DONE = 0x82
+RESP_OUTPUT = 0x83
+
+ERR_BAD_COMMAND = 0xE1
+ERR_RUN_NO_IMAGE = 0xE2
+ERR_READ_NO_RESULT = 0xE3
+
+ERROR_NAMES = {
+    ERR_BAD_COMMAND: "bad command",
+    ERR_RUN_NO_IMAGE: "run before image loaded",
+    ERR_READ_NO_RESULT: "read before result ready",
+}
