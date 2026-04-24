@@ -1,15 +1,15 @@
-module tb_weight_rom (
+module tb_rom (
     input wire clk
 );
   reg [1:0] addr;
   wire signed [7:0] data;
   integer step;
 
-  weight_rom #(
+  rom #(
       .WIDTH(8),
       .DEPTH(4),
       .ADDR_WIDTH(2),
-      .INIT_FILE("tb/data/weight_rom_test.mem")
+      .INIT_FILE("tb/data/rom_test.mem")
   ) dut (
       .clk(clk),
       .addr(addr),
@@ -21,7 +21,7 @@ module tb_weight_rom (
     input signed [7:0] expected_value;
     begin
       if (data !== expected_value) begin
-        $display("[FAIL] weight_rom addr=%0d expected=%0d got=%0d",
+        $display("[FAIL] rom addr=%0d expected=%0d got=%0d",
                  expected_addr, expected_value, data);
         $fatal(1);
       end
@@ -52,7 +52,7 @@ module tb_weight_rom (
         step <= 4;
       end
       4: begin
-        $display("[PASS] weight_rom initialized contents match fixture");
+        $display("[PASS] rom initialized contents match fixture");
         $finish;
       end
     endcase

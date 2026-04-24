@@ -1,4 +1,4 @@
-module top #(
+module mlp_uart #(
     parameter CLK_FRE = 50,
     parameter BAUD_RATE = 115200,
     parameter INPUT_SIZE = 784,
@@ -42,7 +42,6 @@ module top #(
   wire image_loaded_unused;
   wire result_valid_unused;
   wire [2:0] state_debug_unused;
-
 
   uart_rx #(
       .CLK_FRE(CLK_FRE),

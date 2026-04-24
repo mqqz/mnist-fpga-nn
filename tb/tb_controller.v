@@ -197,7 +197,7 @@ module tb_controller (
 
       13: begin
         if (state_debug !== 3'd3) begin
-          $display("[FAIL] controller expected RUN_LAYER2 state got %0d", state_debug);
+          $display("[FAIL] controller expected WAIT_RUN state got %0d", state_debug);
           $fatal(1);
         end
 

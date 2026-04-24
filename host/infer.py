@@ -1,5 +1,6 @@
 import argparse
 import struct
+import time
 from pathlib import Path
 from typing import Any
 
@@ -89,15 +90,31 @@ def compare_reference(
         raise AssertionError("logit length mismatch")
 
 
-def run_inference(port: Any, pixels: bytes) -> tuple[int, int, list[int]]:
-    port.write(bytes([CMD_LOAD_INPUT]))
-    port.write(pixels)
+def write_bytes(port: Any, data: bytes, inter_byte_delay: float) -> None:
+    if inter_byte_delay == 0:
+        port.write(data)
+        port.flush()
+        return
+
+    for value in data:
+        port.write(bytes([value]))
+        port.flush()
+        time.sleep(inter_byte_delay)
+
+
+def run_inference(
+    port: Any,
+    pixels: bytes,
+    inter_byte_delay: float = 0.0,
+) -> tuple[int, int, list[int]]:
+    write_bytes(port, bytes([CMD_LOAD_INPUT]), inter_byte_delay)
+    write_bytes(port, pixels, inter_byte_delay)
     expect_byte(port, RESP_LOAD_DONE)
 
-    port.write(bytes([CMD_RUN]))
+    write_bytes(port, bytes([CMD_RUN]), inter_byte_delay)
     expect_byte(port, RESP_RUN_DONE)
 
-    port.write(bytes([CMD_READ_OUTPUT]))
+    write_bytes(port, bytes([CMD_READ_OUTPUT]), inter_byte_delay)
     expect_byte(port, RESP_OUTPUT)
 
     class_id = read_exact(port, 1)[0]
@@ -114,6 +131,12 @@ def main() -> None:
     parser.add_argument("--baud", type=int, default=115200)
     parser.add_argument("--timeout", type=float, default=2.0)
     parser.add_argument(
+        "--inter-byte-delay",
+        type=float,
+        default=0.0,
+        help="seconds to wait after each transmitted byte; useful for UART bring-up",
+    )
+    parser.add_argument(
         "--compare-reference",
         type=Path,
         metavar="DIR",
@@ -128,7 +151,7 @@ def main() -> None:
     with serial.Serial(args.port, args.baud, timeout=args.timeout) as port:
         port.reset_input_buffer()
         port.reset_output_buffer()
-        class_id, class_score, logits = run_inference(port, pixels)
+        class_id, class_score, logits = run_inference(port, pixels, args.inter_byte_delay)
 
     print(f"class_id={class_id}")
     print(f"class_score={class_score}")

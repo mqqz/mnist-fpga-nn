@@ -1,4 +1,4 @@
-module tb_param_rom (
+module tb_params (
     input wire clk
 );
   reg [14:0] fc1_w_addr;
@@ -13,45 +13,45 @@ module tb_param_rom (
 
   integer step;
 
-  weight_rom #(
+  rom #(
       .WIDTH(8),
       .DEPTH(25088),
       .ADDR_WIDTH(15),
       .INIT_FILE("mem/fc1_weight.mem")
-  ) fc1_weight_rom (
+  ) fc1_weight (
       .clk(clk),
       .addr(fc1_w_addr),
       .data(fc1_w_data)
   );
 
-  weight_rom #(
+  rom #(
       .WIDTH(32),
       .DEPTH(32),
       .ADDR_WIDTH(5),
       .INIT_FILE("mem/fc1_bias.mem")
-  ) fc1_bias_rom (
+  ) fc1_bias (
       .clk(clk),
       .addr(fc1_b_addr),
       .data(fc1_b_data)
   );
 
-  weight_rom #(
+  rom #(
       .WIDTH(8),
       .DEPTH(320),
       .ADDR_WIDTH(9),
       .INIT_FILE("mem/fc2_weight.mem")
-  ) fc2_weight_rom (
+  ) fc2_weight (
       .clk(clk),
       .addr(fc2_w_addr),
       .data(fc2_w_data)
   );
 
-  weight_rom #(
+  rom #(
       .WIDTH(32),
       .DEPTH(10),
       .ADDR_WIDTH(4),
       .INIT_FILE("mem/fc2_bias.mem")
-  ) fc2_bias_rom (
+  ) fc2_bias (
       .clk(clk),
       .addr(fc2_b_addr),
       .data(fc2_b_data)
@@ -84,7 +84,7 @@ module tb_param_rom (
       end
 
       3: begin
-        $display("[PASS] param_rom loaded exported weights and biases through weight_rom");
+        $display("[PASS] params loaded exported weights and biases through rom");
         $finish;
       end
     endcase

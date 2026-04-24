@@ -83,45 +83,47 @@ module mlp #(
   wire signed [7:0] fc2_weight_data;
   wire signed [31:0] fc2_bias_data;
 
-  weight_rom #(
+  rom #(
       .WIDTH(8),
       .DEPTH(INPUT_SIZE * HIDDEN_SIZE),
       .ADDR_WIDTH(FC1_W_ADDR_W),
       .INIT_FILE(FC1_WEIGHT_FILE)
-  ) fc1_weight_rom (
+  ) fc1_weight (
       .clk(clk),
       .addr(fc1_w_addr),
       .data(fc1_weight_data)
   );
 
-  small_rom #(
+  rom #(
       .WIDTH(32),
       .DEPTH(HIDDEN_SIZE),
       .ADDR_WIDTH(HIDDEN_ADDR_W),
-      .INIT_FILE(FC1_BIAS_FILE)
-  ) fc1_bias_rom (
+      .INIT_FILE(FC1_BIAS_FILE),
+      .DISTRIBUTED(1)
+  ) fc1_bias (
       .clk(clk),
       .addr(fc1_bias_addr),
       .data(fc1_bias_data)
   );
 
-  weight_rom #(
+  rom #(
       .WIDTH(8),
       .DEPTH(HIDDEN_SIZE * OUTPUT_SIZE),
       .ADDR_WIDTH(FC2_W_ADDR_W),
       .INIT_FILE(FC2_WEIGHT_FILE)
-  ) fc2_weight_rom (
+  ) fc2_weight (
       .clk(clk),
       .addr(fc2_w_addr),
       .data(fc2_weight_data)
   );
 
-  small_rom #(
+  rom #(
       .WIDTH(32),
       .DEPTH(OUTPUT_SIZE),
       .ADDR_WIDTH(OUTPUT_ADDR_W),
-      .INIT_FILE(FC2_BIAS_FILE)
-  ) fc2_bias_rom (
+      .INIT_FILE(FC2_BIAS_FILE),
+      .DISTRIBUTED(1)
+  ) fc2_bias (
       .clk(clk),
       .addr(fc2_bias_addr),
       .data(fc2_bias_data)

@@ -1,11 +1,11 @@
-module tb_top (
+module tb_mlp_uart (
     input wire clk
 );
   reg reset;
   reg rx_pin;
   wire tx_pin;
 
-  top #(
+  mlp_uart #(
       .CLK_FRE(1),
       .BAUD_RATE(250000),
       .INPUT_SIZE(4),
@@ -38,11 +38,11 @@ module tb_top (
 
   always @(negedge clk) begin
     if (tx_pin !== 1'b1 && reset === 1'b0) begin
-      $display("[FAIL] top should idle tx high without commands");
+      $display("[FAIL] mlp_uart should idle tx high without commands");
       $fatal(1);
     end
 
-    $display("[PASS] top integrates UART, controller, MLP, and TX");
+    $display("[PASS] mlp_uart integrates UART, controller, MLP, and TX");
     $finish;
   end
 endmodule
